@@ -1,0 +1,173 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{1pt}
+\fancyhead[C]{\textbf{[LINMA1731] First Homework}}
+\fancyhead[L]{February 2019}
+\fancyhead[R]{Gilles Peiffer [24321600]}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{mathtools,amssymb}
+\usepackage[binary-units=true,separate-uncertainty = true,multi-part-units=single]{siunitx}
+\usepackage{float}
+\usepackage[linktoc=all]{hyperref}
+\hypersetup{breaklinks=true}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+\newcommand{\hsp}{\hspace{20pt}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\graphicspath{{img/}}
+\usepackage{caption}
+\usepackage{textcomp}
+\usepackage{array}
+\usepackage{color}
+\usepackage{tabularx,booktabs}
+\usepackage{titlesec}
+\usepackage{wrapfig}
+\titlespacing{\section}{0pt}{\parskip}{-\parskip}
+\titlespacing{\subsection}{0pt}{\parskip}{-\parskip}
+\titlespacing{\subsubsection}{0pt}{\parskip}{-\parskip}
+\pagestyle{fancy}
+\DeclarePairedDelimiterX{\norm}[1]{\lVert}{\rVert}{#1}
+
+\DeclareSymbolFont{sfletters}{OML}{cmbrm}{m}{it}
+
+\DeclareMathSymbol{\smu}{\mathord}{sfletters}{"16}
+\DeclareMathSymbol{\ssigma}{\mathord}{sfletters}{"1B}
+\DeclareMathSymbol{\sphi}{\mathord}{sfletters}{"1E}
+\newcommand{\imag}{\mathrm{i}\mkern1mu} % Imaginary unit
+\newcommand{\imagj}{\mathrm{j}\mkern1mu} % Imaginary unit but with 100% more engineering
+\newcommand{\abs}[1]{\left\lvert#1\right\lvert}
+\usepackage{listings}
+\lstset{
+	language=Python,
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	basicstyle=\rm\small\ttfamily,
+	keywordstyle=\bfseries\color{dkred},
+	frame=single,
+	commentstyle=\color{gray}=small,
+	stringstyle=\color{dkgreen},
+	%backgroundcolor=\color{gray!10},
+	%tabsize=8, % Thank you Papa Torvalds
+	%rulecolor=\color{black!30},
+	%title=\lstname,
+	breaklines=true,
+	framextopmargin=2pt,
+	framexbottommargin=2pt,
+	extendedchars=true,
+	inputencoding=utf8,
+}
+
+\DeclareMathOperator{\newdiff}{d} % use \dif instead
+\newcommand{\dif}{\newdiff\!}
+
+\newcommand\givenbase[1][]{\nonscript\:#1\lvert\nonscript\:}
+\let\given\givenbase
+\newcommand\sgiven{\givenbase[\delimsize]}
+\DeclarePairedDelimiterX\Basics[1](){\let\given\sgiven #1}
+
+\makeatletter
+\DeclareRobustCommand{\Pr}{\operatorname{Pr}\@ifstar\@firstofone\@Pr}
+\newcommand{\@Pr}[1]{\left\{#1\right\}}
+\makeatother
+
+\newcommand{\cdf}{\mathsf{F}}
+\newcommand{\pdf}{\mathsf{T}}
+\newcommand{\momnc}{\mathsf{m}}
+\newcommand{\mom}{\smu}
+\newcommand{\sd}{\ssigma}
+\newcommand{\vars}{\ssigma^2}
+\newcommand{\charfun}{\sphi}
+\newcommand{\vecX}{\bm{X}}
+
+\makeatletter
+\DeclareRobustCommand{\expe}{\mathsf{E}\@ifstar\@firstofone\@expe}
+\newcommand{\@expe}[1]{\left[#1\right]}
+\makeatother
+
+\makeatletter
+\DeclareRobustCommand{\var}{\mathsf{Var}\@ifstar\@firstofone\@var}
+\newcommand{\@var}[1]{\left[#1\right]}
+\makeatother
+
+\begin{document}
+\section{Statement}
+Let $X$ be a continuous random variable whose probability density function is given by
+\begin{equation}
+\pdf_X(x) = \left\{ \begin{array}{l@{\quad}l} c\,, & -1 \le x \le 1, \\ 0\,, &  \textnormal{otherwise.} \end{array}\right.
+\end{equation}
+\begin{enumerate}
+	\item What is the value of $c$?
+	\item Derive the expression of the cumulative distribution function of $X$.
+	\item Derive the expression of the characteristic function of $X$.
+	\item Let $Y$ be the continuous random variable defined as $Y = 3 \mathrm{e}^X + 1$.
+	Derive the expression of the probability density function of $Y$.
+\end{enumerate}
+
+\section{Solution}
+\begin{enumerate}
+	\item In order to find the value of $c$,
+	we must recall that, by the definition of the probability density function,
+	\begin{equation}
+	\int_{-\infty}^{+\infty} \pdf_X(x) \dif x = 1\,.
+	\end{equation}
+	With this in mind, we find that
+	\begin{equation}
+	\int_{-1}^{1} c \dif x = 1\,.
+	\end{equation}
+	Solving the integral on the left yields
+	\begin{equation}
+	\Big[cx\Big]_{x = -1}^{x = 1} = 1 \iff \boxed{c = \frac{1}{2}}\,.
+	\end{equation}
+	\item The cumulative distribution function $\cdf_X(x)$ is defined as
+	\begin{equation}
+	\cdf_X(x) = \int_{-\infty}^{x} \pdf_X(\xi) \dif \xi \implies \boxed{\cdf_X(x) = \left\{ 
+	\begin{array}{l@{\quad}l}
+	0\,, & x < -1\,, \\
+	\\
+	(x+1)/2\,, & -1 \le x < 1\,, \\
+	\\
+	1\,, & x \ge 1\,.
+	\end{array} \right.}
+	\end{equation}
+	\item The characteristic function $\charfun_X(q)$ is defined as
+	\begin{equation}
+	\charfun_X(q) = \expe{\mathrm{e}^{\imagj q X}} = \int_{-\infty}^{+\infty} \mathrm{e}^{\imagj q x} \pdf_X(x) \dif x\,.
+	\end{equation}
+	This means that in our case,
+	\begin{equation}
+	\charfun_X(q) = \int_{-1}^{1} \mathrm{e}^{\imagj q x} \frac{1}{2} \dif x \iff \charfun_X(q) = \frac{1}{2} \bigg[ \frac{1}{\imagj q} \mathrm{e}^{\imagj q x}\bigg]_{x = -1}^{x = 1}\,.
+	\end{equation}
+	Substituting the values of $x$ in the previous equation then yields
+	\begin{equation}
+	\charfun_X(q) = \frac{1}{\imagj 2 q} (\mathrm{e}^{\imagj q} - \mathrm{e}^{-\imagj q}) \implies \boxed{\charfun_X(q) = \frac{\sinh(\imagj q)}{\imagj q}}\,.
+	\end{equation}
+	\item Since the transformation $u \colon x \mapsto 3 \mathrm{e}^x + 1$ is strictly increasing, $u$ has an inverse, $u^{-1} \colon y \mapsto \ln\left(\frac{y-1}{3}\right)$.
+	Thus, we have
+	\begin{align}
+	\cdf_Y(y) &= \Pr{u^{-1}\left(3 \mathrm{e}^X + 1\right) \le u^{-1}(y)}\\
+	&= \Pr{X \le \ln\left(\frac{y-1}{3}\right)} \\
+	&= \cdf_X\left( \ln\left(\frac{y-1}{3}\right) \right)\\
+	&= \left\{ 
+	\begin{array}{l@{\quad}l}
+	0\,, & y < 3/\mathrm{e} + 1\,, \\
+	\\
+	\left.\left(\ln\left(\frac{y-1}{3}\right)+1\right)\right/2\,, & 3/\mathrm{e} + 1 \le  y < 3 \mathrm{e} + 1\,, \\
+	\\
+	1\,, & y \ge 3\mathrm{e}+1\,.
+	\end{array} \right.
+	\end{align}
+	We then finally take the derivative of $\cdf_Y(y)$
+	in order to find $\pdf_Y(y)$:
+	\begin{equation}
+	\boxed{\pdf_Y(y) = \left\{ \begin{array}{l@{\quad}l} \frac{1}{2(y - 1)}\,, & 3/\mathrm{e} + 1 \le  y < 3 \mathrm{e} + 1, \\\\ 0\,, &  \textnormal{otherwise.} \end{array}\right.}
+	\end{equation}
+\end{enumerate}
+\end{document}
