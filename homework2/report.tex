@@ -1,0 +1,162 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{1pt}
+\fancyhead[C]{\textbf{[LINMA1731] Second Homework}}
+\fancyhead[L]{March 2019}
+\fancyhead[R]{Gilles Peiffer [24321600]}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{mathtools,amssymb}
+\usepackage[binary-units=true,separate-uncertainty = true,multi-part-units=single]{siunitx}
+\usepackage{float}
+\usepackage[linktoc=all]{hyperref}
+\hypersetup{breaklinks=true}
+\newcommand{\hsp}{\hspace{20pt}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\graphicspath{{img/}}
+\usepackage{caption}
+\usepackage{textcomp}
+\usepackage{array}
+\usepackage{color}
+\usepackage{tabularx,booktabs}
+\usepackage{titlesec}
+\usepackage{wrapfig}
+\pagestyle{fancy}
+\DeclarePairedDelimiterX{\norm}[1]{\lVert}{\rVert}{#1}
+
+\DeclareSymbolFont{sfletters}{OML}{cmbrm}{m}{it}
+
+\DeclareMathSymbol{\smu}{\mathord}{sfletters}{"16}
+\DeclareMathSymbol{\ssigma}{\mathord}{sfletters}{"1B}
+\DeclareMathSymbol{\sphi}{\mathord}{sfletters}{"1E}
+\newcommand{\imag}{\mathrm{i}\mkern1mu} % Imaginary unit
+\newcommand{\imagj}{\mathrm{j}\mkern1mu} % Imaginary unit but with 100% more engineering
+\newcommand{\abs}[1]{\left\lvert#1\right\lvert}
+\usepackage{listings}
+\lstset{
+	language=Python,
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	basicstyle=\rm\small\ttfamily,
+	keywordstyle=\bfseries\color{dkred},
+	frame=single,
+	commentstyle=\color{gray}=small,
+	stringstyle=\color{dkgreen},
+	%backgroundcolor=\color{gray!10},
+	%tabsize=8, % Thank you Papa Torvalds
+	%rulecolor=\color{black!30},
+	%title=\lstname,
+	breaklines=true,
+	framextopmargin=2pt,
+	framexbottommargin=2pt,
+	extendedchars=true,
+	inputencoding=utf8,
+}
+
+\DeclareMathOperator{\newdiff}{d} % use \dif instead
+\newcommand{\dif}{\newdiff\!}
+
+\newcommand\givenbase[1][]{\nonscript\:#1\lvert\nonscript\:}
+\let\given\givenbase
+\newcommand\sgiven{\givenbase[\delimsize]}
+\DeclarePairedDelimiterX\Basics[1](){\let\given\sgiven #1}
+
+\makeatletter
+\DeclareRobustCommand{\Pr}{\operatorname{Pr}\@ifstar\@firstofone\@Pr}
+\newcommand{\@Pr}[1]{\left\{#1\right\}}
+\makeatother
+
+\newcommand{\cdf}{\mathsf{F}}
+\newcommand{\pdf}{\mathsf{T}}
+\newcommand{\momnc}{\mathsf{m}}
+\newcommand{\mom}{\smu}
+\newcommand{\sd}{\ssigma}
+\newcommand{\vars}{\ssigma^2}
+\newcommand{\charfun}{\sphi}
+\newcommand{\vecX}{\bm{X}}
+\newcommand{\vecXc}{\vecX_{\textnormal{c}}}
+\newcommand{\Hc}{H_\textnormal{c}}
+\newcommand{\vecY}{\bm{Y}}
+\newcommand{\vecYc}{\vecY_{\textnormal{c}}}
+\newcommand{\vecZ}{\bm{Z}}
+\newcommand{\vecZc}{\vecZ_{\textnormal{c}}}
+\newcommand{\vecmom}{\bm{\momnc}}
+\newcommand{\cov}{\mathsf{C}}
+\newcommand{\covmat}{\bm{\cov}}
+\newcommand{\Amat}{\bm{A}}
+\newcommand{\hilb}{\textnormal{H}}
+\makeatletter
+\DeclareRobustCommand{\expe}{\mathsf{E}\@ifstar\@firstofone\@expe}
+\newcommand{\@expe}[1]{\left[#1\right]}
+\makeatother
+
+\makeatletter
+\DeclareRobustCommand{\var}{\mathsf{Var}\@ifstar\@firstofone\@var}
+\newcommand{\@var}[1]{\left[#1\right]}
+\makeatother
+
+\begin{document}
+\section{Statement}
+Let $X(t)$ be a WSS stochastic process
+with autocovariance function $\cov_X(\tau)$.
+Let us consider the two following continuous-time stochastic processes,
+\begin{equation}
+Y(t) = X(t) \cos(\omega t + \phi) \quad \textnormal{and} \quad Z(t) = X(t) \cos[(\omega + \delta)t + \phi]\,,
+\end{equation}
+where $\omega$ and $\delta$ are constant and $\phi$ is a random variable independent of $X(t)$ and uniformly distributed on $[0, 2\pi]$.
+Their autocovariance functions are
+\begin{itemize}
+	\item $\cov_Y(\tau) = \frac{1}{2} \cov_X(\tau) \cos(\omega \tau)$;
+	\item $\cov_Z(\tau) = \frac{1}{2} \cov_X(\tau) \cos[(\omega + \delta) \tau]$.
+\end{itemize}
+Discuss the wide sense stationarity of process $H(t) = Y(t) + Z(t)$.
+
+\section{Solution}
+In order for $H(t)$ to be WSS, the signal should respect two conditions:
+\begin{itemize}
+	\item The mean should not depend on the time.
+	\item The covariance between two times $t$ and $t'$ should only depend on their difference, $\tau = t - t'$.
+\end{itemize}
+
+\subsection{Condition on the mean}
+We thus compute
+\begin{align}
+\momnc_H(t) &= \expe{H(t)} \\
+&= \expe{X(t)[\cos(\omega t + \phi) + \cos((\omega+\delta)t + \phi)]} \\
+&= \expe{X(t)}\expe{\cos(\omega t + \phi) + \cos((\omega+\delta)t + \phi)} \\
+&= \frac{\momnc_X}{2\pi}\int_{0}^{2\pi} [\cos(\omega t + \phi) + \cos((\omega+\delta)t + \phi)]\dif \phi \\
+&= \frac{\momnc_X}{2\pi} \left(\int_{\omega t}^{2\pi+ \omega t} \cos \phi' \dif \phi'+ \int_{(\omega + \delta) t}^{2\pi + (\omega + \delta) t} \cos \phi' \dif \phi' \right) \\
+&= 0\,.
+\end{align}
+Hence the mean of $Y(t)$, $Z(t)$ and $H(t)$ does not depend on $t$.
+
+\subsection{Condition on the autocovariance}
+Next, we look at the autocovariance.
+We compute (using the previous result)
+\begin{align}
+\cov_{H}(t, t') &= \expe{\Hc(t) \Hc^\hilb(t')} \\
+\intertext{where ${}^\hilb$ denotes the transjugate matrix,}
+&= \expe{H(t)H^\hilb(t')} \\
+&= \expe{(Y(t) + Z(t))(Y^\hilb(t') + Z^\hilb(t'))}\,, \\
+&= \expe{Y(t)Y^\hilb(t')} + \expe{Z(t)Z^\hilb(t')} + \expe{Y(t)Z^\hilb(t')} + \expe{Z(t)Y^\hilb(t')} \\
+&= \cov_Y(\tau) + \cov_Z(\tau) + 2\expe{X(t)X^\hilb(t') \cos(\omega t + \phi) \cos((\omega + \delta)t' + \phi)}\\
+&=  \cov_Y(\tau) + \cov_Z(\tau) + 2 \left(\cov_X(\tau) + \momnc_X \momnc_X^\hilb\right)\expe{\cos(\omega t + \phi) \cos((\omega + \delta)t' + \phi)}\,.
+\end{align}
+We then only have to determine whether the expectation in that last term depends only on $\tau$.
+\begin{align}
+\expe{\cos(\omega t + \phi) \cos((\omega + \delta)t' + \phi)} &= \expe{\cos(\omega\tau - \delta t') + \cos(\omega (t + t') + \delta t' + 2 \phi)}\\
+&= \cos(\omega\tau - \delta t') + \frac{1}{2\pi} \int_0^{2\pi} \cos(\omega (t + t') + \delta t' + 2 \phi) \dif \phi \\
+&= \cos(\omega \tau - \delta t')\,.
+\end{align}
+This final term should only depend on $\tau$ in order for the autocovariance to only depend on $\tau$, and hence make $H(t)$ a WSS stochastic process.
+The only way for this to be true, is to have $\delta = 0$.
+Since there was no previous constraint on $H(t)$ because of the mean, we can conclude that \fbox{$H(t)$ is a WSS process if and only if $\delta = 0$.}
+\end{document}

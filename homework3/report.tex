@@ -1,0 +1,162 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{1pt}
+\fancyhead[C]{\textsc{[LINMA1731] Third Homework}}
+\fancyhead[L]{11 March 2019}
+\fancyhead[R]{Gilles \textsc{Peiffer} (24321600)}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{mathtools,amssymb}
+\usepackage[binary-units=true,separate-uncertainty = true,multi-part-units=single]{siunitx}
+\usepackage{float}
+\usepackage[linktoc=all]{hyperref}
+\hypersetup{breaklinks=true}
+\newcommand{\hsp}{\hspace{20pt}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\graphicspath{{img/}}
+\usepackage{caption}
+\usepackage{textcomp}
+\usepackage{array}
+\usepackage{color}
+\usepackage{tabularx,booktabs}
+\usepackage{titlesec}
+\usepackage{wrapfig}
+\pagestyle{fancy}
+\usepackage{mathrsfs}
+\DeclarePairedDelimiterX{\norm}[1]{\lVert}{\rVert}{#1}
+
+\DeclareSymbolFont{sfletters}{OML}{cmbrm}{m}{it}
+
+\DeclareMathSymbol{\smu}{\mathord}{sfletters}{"16}
+\DeclareMathSymbol{\ssigma}{\mathord}{sfletters}{"1B}
+\DeclareMathSymbol{\sphi}{\mathord}{sfletters}{"1E}
+\newcommand{\imag}{\mathrm{i}\mkern1mu} % Imaginary unit
+\newcommand{\imagj}{\mathrm{j}\mkern1mu} % Imaginary unit but with 100% more engineering
+\newcommand{\abs}[1]{\left\lvert#1\right\lvert}
+\usepackage{listings}
+\lstset{
+	language=Python,
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	basicstyle=\rm\small\ttfamily,
+	keywordstyle=\bfseries\color{dkred},
+	frame=single,
+	commentstyle=\color{gray}=small,
+	stringstyle=\color{dkgreen},
+	%backgroundcolor=\color{gray!10},
+	%tabsize=8, % Thank you Papa Torvalds
+	%rulecolor=\color{black!30},
+	%title=\lstname,
+	breaklines=true,
+	framextopmargin=2pt,
+	framexbottommargin=2pt,
+	extendedchars=true,
+	inputencoding=utf8,
+}
+
+\DeclareMathOperator{\newdiff}{d} % use \dif instead
+\newcommand{\dif}{\newdiff\!}
+\newcommand{\e}{\mathrm{e}}
+
+\newcommand\givenbase[1][]{\nonscript\:#1\lvert\nonscript\:}
+\let\given\givenbase
+\newcommand\sgiven{\givenbase[\delimsize]}
+\DeclarePairedDelimiterX\Basics[1](){\let\given\sgiven #1}
+
+\makeatletter
+\DeclareRobustCommand{\Pr}{\operatorname{Pr}\@ifstar\@firstofone\@Pr}
+\newcommand{\@Pr}[1]{\left\{#1\right\}}
+\makeatother
+
+\newcommand{\cdf}{\mathsf{F}}
+\newcommand{\pdf}{\mathsf{T}}
+\newcommand{\momnc}{\mathsf{m}}
+\newcommand{\mom}{\smu}
+\newcommand{\sd}{\ssigma}
+\newcommand{\vars}{\ssigma^2}
+\newcommand{\charfun}{\sphi}
+\newcommand{\vecX}{\bm{X}}
+\newcommand{\vecXc}{\vecX_{\textnormal{c}}}
+\newcommand{\Hc}{H_\textnormal{c}}
+\newcommand{\vecY}{\bm{Y}}
+\newcommand{\vecYc}{\vecY_{\textnormal{c}}}
+\newcommand{\vecZ}{\bm{Z}}
+\newcommand{\vecZc}{\vecZ_{\textnormal{c}}}
+\newcommand{\vecmom}{\bm{\momnc}}
+\newcommand{\cov}{C}
+\newcommand{\covmat}{\bm{\cov}}
+\newcommand{\Amat}{\bm{A}}
+\newcommand{\hilb}{\textnormal{H}}
+\makeatletter
+\DeclareRobustCommand{\expe}{\mathsf{E}\@ifstar\@firstofone\@expe}
+\newcommand{\@expe}[1]{\left[#1\right]}
+\makeatother
+
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+
+\makeatletter
+\DeclareRobustCommand{\var}{\mathsf{Var}\@ifstar\@firstofone\@var}
+\newcommand{\@var}[1]{\left[#1\right]}
+\makeatother
+
+\begin{document}
+\section{Statement}
+Let $X(t)$ be a continuous WSS stochastic process.
+The covariance function of $X(t)$ is given by $\cov_X(\tau) = \e^{-\tau^2/2}$ and its mean by $\momnc_X = 1$.
+
+$X(t)$ is filtered by an LTI system of impulse response $h(t) = \e^{-3t} u(t)$ to produce a new process $Y(t)$.
+
+\begin{enumerate}
+	\item Derive the expression of the power spectral density of $X(t)$.
+	\item Derive the mean of $Y(t)$.
+	\item Derive the expression of the power spectral density of $Y(t)$.
+\end{enumerate}
+
+\section{Solution}
+\begin{enumerate}
+	\item For the first exercise,
+	we must recall that the power spectral density is defined as the Fourier transform of the autocovariance function.
+	We thus have
+	\begin{align}
+	\gamma_X(\omega) &= \mathscr{F}_\tau \left[\cov_X(\tau) \right](\omega) \notag \\
+	&= \mathscr{F}_\tau \left[\e^{-\tau^2/2}\right](\omega) \notag \\
+	&= \int_{-\infty}^{+\infty} \e^{-\tau^2/2} \e^{-\imagj \omega \tau} \dif \tau \notag \,.\\
+	\intertext{Computing this integral, we find that}
+	\Aboxed{\gamma_X(\omega) &= \sqrt{2 \pi}  \e^{-\omega^2 /2}\,.} \label{eq:psdx}
+	\end{align}
+	\item In order to compute the mean of $Y(t)$,
+	we remember that the output of an LTI system that receives a WSS input is also WSS:
+	\begin{align}
+	\momnc_Y &= \expe{Y(t)} \notag \\
+	&= \int_{-\infty}^{+\infty} y(\tau) \dif \tau \notag \\
+	&= \momnc_X \int_{-\infty}^{+\infty} h(\tau) \dif \tau \notag \\
+	&= \int_{-\infty}^{+\infty} \e^{-3\tau} u(\tau) \dif \tau \notag \\
+	&= \int_{0}^{+\infty} \e^{-3\tau} \dif \tau \notag\,. \\
+	\intertext{Computing this integral yields}
+	\Aboxed{\momnc_Y &= \frac{1}{3}\,.}
+	\end{align}
+	\item In order to compute the power spectral density of $Y(t)$,
+	we must recall the Wiener--Khinchin theorem: since $Y(t)$ is the output of an LTI system to which a WSS random process is fed,
+	\begin{align}
+	\gamma_Y(\omega) &= \abs{H(\omega)}^2 \gamma_X(\omega)\,. \label{eq:psdrel} \\
+	\intertext{In order to use the result of (\ref{eq:psdx}), we must compute the Fourier transform of the impulse response, $H(\omega)$:}
+	H(\omega) &= \mathscr{F}_t\left[ h(t) \right](\omega) \notag \\
+	&= \mathscr{F}_t\left[ \e^{-3t} u(t) \right](\omega) \notag \\
+	&= \int_{-\infty}^{+\infty} \e^{-3\tau} u(\tau) \e^{\imagj \omega \tau}\dif \tau \notag \\
+	&= \int_0^{+\infty} \e^{-3\tau} \e^{\imagj \omega \tau} \dif \tau \notag \\
+	&= \frac{1}{\imagj \omega + 3}\,. \label{eq:freqresp}\\
+	\intertext{With the result in (\ref{eq:freqresp}), we can easily compute $\gamma_Y(\omega)$ using (\ref{eq:psdrel}) and (\ref{eq:psdx}):}
+	\Aboxed{\gamma_Y(\omega) &= \sqrt{2\pi} \frac{1}{\abs{\imagj \omega + 3}^2} \e^{-\omega^2/2}\,.}
+	\end{align}
+\end{enumerate}
+
+\end{document}
