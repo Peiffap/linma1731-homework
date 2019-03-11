@@ -155,7 +155,7 @@ $X(t)$ is filtered by an LTI system of impulse response $h(t) = \e^{-3t} u(t)$ t
 	&= \int_0^{+\infty} \e^{-3\tau} \e^{\imagj \omega \tau} \dif \tau \notag \\
 	&= \frac{1}{\imagj \omega + 3}\,. \label{eq:freqresp}\\
 	\intertext{With the result in (\ref{eq:freqresp}), we can easily compute $\gamma_Y(\omega)$ using (\ref{eq:psdrel}) and (\ref{eq:psdx}):}
-	\Aboxed{\gamma_Y(\omega) &= \sqrt{2\pi} \frac{1}{\abs{\imagj \omega + 3}^2} \e^{-\omega^2/2}\,.}
+	\Aboxed{\gamma_Y(\omega) &=  \frac{\sqrt{2\pi}}{\omega^2 + 9} \e^{-\omega^2/2}\,.}
 	\end{align}
 \end{enumerate}
 
