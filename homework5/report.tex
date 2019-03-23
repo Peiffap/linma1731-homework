@@ -1,0 +1,179 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{1pt}
+\fancyhead[C]{\textsc{[LINMA1731] Fifth Homework}}
+\fancyhead[L]{25 March 2019}
+\fancyhead[R]{Gilles \textsc{Peiffer} (24321600)}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{mathtools,amssymb}
+\usepackage[binary-units=true,separate-uncertainty = true,multi-part-units=single]{siunitx}
+\usepackage{float}
+\usepackage[linktoc=all]{hyperref}
+\hypersetup{breaklinks=true}
+\newcommand{\hsp}{\hspace{20pt}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\graphicspath{{img/}}
+\usepackage{caption}
+\usepackage{textcomp}
+\usepackage{array}
+\usepackage{tabularx,booktabs}
+\usepackage{titlesec}
+\usepackage{wrapfig}
+\pagestyle{fancy}
+\usepackage{empheq}
+\usepackage{mathrsfs}
+\DeclarePairedDelimiterX{\norm}[1]{\lVert}{\rVert}{#1}
+\definecolor{wolframred}{HTML}{DC1100}
+\definecolor{wolframorange}{HTML}{FF7D00}
+
+\DeclareSymbolFont{sfletters}{OML}{cmbrm}{m}{it}
+
+\DeclareMathSymbol{\smu}{\mathord}{sfletters}{"16}
+\DeclareMathSymbol{\ssigma}{\mathord}{sfletters}{"1B}
+\DeclareMathSymbol{\sphi}{\mathord}{sfletters}{"1E}
+\newcommand{\imag}{\mathrm{i}\mkern1mu} % Imaginary unit
+\newcommand{\imagj}{\mathrm{j}\mkern1mu} % Imaginary unit but with 100% more engineering
+\newcommand{\abs}[1]{\left\lvert#1\right\lvert}
+\usepackage{listings}
+\lstset{
+	language=Python,
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	basicstyle=\rm\small\ttfamily,
+	keywordstyle=\bfseries\color{dkred},
+	frame=single,
+	commentstyle=\color{gray}=small,
+	stringstyle=\color{dkgreen},
+	%backgroundcolor=\color{gray!10},
+	%tabsize=8, % Thank you Papa Torvalds
+	%rulecolor=\color{black!30},
+	%title=\lstname,
+	breaklines=true,
+	framextopmargin=2pt,
+	framexbottommargin=2pt,
+	extendedchars=true,
+	inputencoding=utf8,
+}
+
+\DeclareMathOperator{\newdiff}{d} % use \dif instead
+\newcommand{\dif}{\newdiff\!}
+\newcommand{\e}{\mathrm{e}}
+
+\newcommand\givenbase[1][]{\nonscript\:#1\lvert\nonscript\:}
+\let\given\givenbase
+\newcommand\sgiven{\givenbase[\delimsize]}
+\DeclarePairedDelimiterX\Basics[1](){\let\given\sgiven #1}
+
+\makeatletter
+\DeclareRobustCommand{\Pr}{\operatorname{Pr}\@ifstar\@firstofone\@Pr}
+\newcommand{\@Pr}[1]{\left\{#1\right\}}
+\makeatother
+
+\newcommand{\cdf}{\mathsf{F}}
+\newcommand{\pdf}{\mathsf{f}}
+\newcommand{\momnc}{\mathsf{m}}
+\newcommand{\mom}{\smu}
+\newcommand{\sd}{\ssigma}
+\newcommand{\vars}{\ssigma^2}
+\newcommand{\charfun}{\sphi}
+\newcommand{\vecX}{\bm{X}}
+\newcommand{\vecXc}{\vecX_{\textnormal{c}}}
+\newcommand{\Hc}{H_\textnormal{c}}
+\newcommand{\vecY}{\bm{Y}}
+\newcommand{\vecYc}{\vecY_{\textnormal{c}}}
+\newcommand{\vecZ}{\bm{Z}}
+\newcommand{\vecZc}{\vecZ_{\textnormal{c}}}
+\newcommand{\vecmom}{\bm{\momnc}}
+\newcommand{\cov}{C}
+\newcommand{\covmat}{\bm{\cov}}
+\newcommand{\Amat}{\bm{A}}
+\newcommand{\hilb}{\textnormal{H}}
+\newcommand{\hTheta}{\widehat{\Theta}}
+
+\makeatletter
+\DeclareRobustCommand{\expe}{\mathbb{E}\@ifstar\@firstofone\@expe}
+\newcommand{\@expe}[1]{\left[#1\right]}
+\makeatother
+
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+
+\makeatletter
+\DeclareRobustCommand{\var}{\mathbb{V}\@ifstar\@firstofone\@var}
+\newcommand{\@var}[1]{\left[#1\right]}
+\makeatother
+
+\newcommand*\widebox[1]{\boxed{#1}}
+
+\begin{document}
+\section{Statement}
+Let \(\hTheta_{\theta, 1}\) and \(\hTheta_{\theta, 2}\) be two unbiased estimators for a real parameter \(\theta\) (deterministic).
+Let us define \(\hTheta_\theta = \alpha \hTheta_{\theta, 1} + \beta \hTheta_{\theta, 2}\), with \(\alpha, \beta \in \mathbb{R}\).
+\begin{itemize}
+	\item For which value(s) of \(\alpha\) and \(\beta\) is the estimator \(\hTheta_\theta\) unbiased? Explain.
+	\item For which value(s) of \(\alpha\) and \(\beta\) is the estimator \(\hTheta_\theta\) found above of minimum variance?
+	We assume that \(\hTheta_{\theta, 1}\) and \(\hTheta_{\theta, 2}\) are independent and that \(\var{\hTheta_{\theta, 1}} = \var{\hTheta_{\theta, 2}} = \vars\). Explain.
+\end{itemize}
+
+\section{Solution}
+\begin{itemize}
+	\item Since the parameter is deterministic, we are in the case of Fisher estimation.
+	We can write \(\hTheta_\theta = g(Z)\), for some random variable \(Z\),
+	hence we have that the estimator is unbiased if
+	\begin{equation}
+	\expe{g(Z); \theta} \coloneqq \int_z g(z) \pdf_Z(z; \theta) \dif z = \theta\,.\notag
+	\end{equation}
+	We know that \(\hTheta_{\theta, i}\) is unbiased for \(i = 1, 2\), hence we have \(\hTheta_{\theta, i} = g_i(Z) = \theta\).
+	We also have that \(g(Z) = \alpha g_1(Z) + \beta g_2(Z)\), hence
+	\begin{equation}
+	\expe{g(Z); \theta} = \alpha \underbrace{\int_z g_1(z) \pdf_Z(z; \theta) \dif z}_{\expe{g_1(Z); \theta} = \theta} + \beta \underbrace{\int_z g_2(z) \pdf_Z(z; \theta) \dif z}_{\expe{g_2(Z); \theta} = \theta} = (\alpha + \beta) \theta\,.\notag
+	\end{equation}
+	As we want the estimator to be unbiased, we want this quantity to be equal to \(\theta\),
+	hence the values of \(\alpha\) and \(\beta\) which yield an unbiased estimator are
+	\begin{equation}
+	\boxed{\alpha \in \mathbb{R}\,, \quad \beta = 1 - \alpha\,.}
+	\end{equation}
+	\item In order to decide when an unbiased estimator is of minimum variance,
+	we must compute its variance.
+	The variance of \(\hTheta_{\theta}\) is given by
+	\begin{align}
+	\var{\hTheta_{\theta}} &= \expe{(\hTheta_\theta - \theta)^2}\,,\notag
+	\intertext{where we simplified the expression from the definition thanks to the fact that \(\theta\) is real and scalar.
+	Developing, we find}
+	\var{\hTheta_{\theta}}&= \expe{\left(\alpha \hTheta_{\theta, 1} + (1 - \alpha) \hTheta_{\theta, 2}\right)^2} \notag\\
+	&= \expe{\alpha^2 \hTheta_{\theta, 1}^2  + 2 \alpha (1 - \alpha) \hTheta_{\theta, 1} \hTheta_{\theta, 2} + (1 - \alpha)^2 \hTheta_{\theta, 2}^2} \notag\\
+	&= \expe{\alpha^2 \hTheta_{\theta, 1}^2} + \expe{2 \alpha (1 - \alpha) \hTheta_{\theta, 1} \hTheta_{\theta, 2}} + \expe{(1 - \alpha)^2 \hTheta_{\theta, 2}^2}\,.\notag
+	\intertext{The first and third terms are simply multiples of the variances of \(\hTheta_{\theta, i} = \vars\), for \(i = 1, 2\).
+	The middle term is a multiple of the cross-covariance between the estimators, which is zero seen as they are independent.
+	Thus, we get}
+	\var{\hTheta_{\theta}}&= \alpha^2 \vars + (1 - \alpha)^2 \vars\,.\notag
+	\end{align}
+	We want to minise this quantity, hence we set its derivative equal to zero:
+	\begin{align}
+	\frac{\dif}{\dif \alpha} \left(\var{\hTheta_{\theta}}\right) &= \big(2 \alpha - 2 (1 - \alpha)\big) \vars \coloneqq 0 \notag\\
+	\iff 2 \alpha &= 2 (1 - \alpha)\notag\\
+	\iff \Aboxed{\alpha = \beta &= \frac{1}{2}\,.}
+	\end{align}
+	We also need to verify that these values do in fact constitute a minimum.
+	This requires computing the second derivative, which is equal to
+	\begin{equation}
+	\frac{\dif^2}{\dif \alpha^2} \left(\var{\hTheta_{\theta}}\right) = \frac{\dif}{\dif \alpha} \Big(\big(2 \alpha - 2 (1 - \alpha)\big) \vars \Big)  = 4 \vars \ge 0\,. \notag
+	\end{equation}
+	As mentioned in the equation, this quantity is positive, hence the values of \(\alpha\) and \(\beta\) found above minimize the variance, as expected.
+\end{itemize}
+
+Taking both requirements into account, we find that
+\begin{equation}
+\boxed{\hTheta_{\theta} = \frac{\hTheta_{\theta, 1} + \hTheta_{\theta, 2}}{2}\,.}
+\end{equation}
+\end{document}
