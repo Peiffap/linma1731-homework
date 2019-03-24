@@ -121,7 +121,7 @@ Let \(\hTheta_{\theta, 1}\) and \(\hTheta_{\theta, 2}\) be two unbiased estimato
 Let us define \(\hTheta_\theta = \alpha \hTheta_{\theta, 1} + \beta \hTheta_{\theta, 2}\), with \(\alpha, \beta \in \mathbb{R}\).
 \begin{itemize}
 	\item For which value(s) of \(\alpha\) and \(\beta\) is the estimator \(\hTheta_\theta\) unbiased? Explain.
-	\item For which value(s) of \(\alpha\) and \(\beta\) is the estimator \(\hTheta_\theta\) found above of minimum variance?
+	\item For which value(s) of \(\alpha\) and \(\beta\) is the estimator \(\hTheta_\theta\) found above of minimal variance?
 	We assume that \(\hTheta_{\theta, 1}\) and \(\hTheta_{\theta, 2}\) are independent and that \(\var{\hTheta_{\theta, 1}} = \var{\hTheta_{\theta, 2}} = \vars\). Explain.
 \end{itemize}
 
@@ -141,15 +141,16 @@ Let us define \(\hTheta_\theta = \alpha \hTheta_{\theta, 1} + \beta \hTheta_{\th
 	As we want the estimator to be unbiased, we want this quantity to be equal to \(\theta\),
 	hence the values of \(\alpha\) and \(\beta\) which yield an unbiased estimator are
 	\begin{equation}
+	\label{eq:unbiasedreq}
 	\boxed{\alpha \in \mathbb{R}\,, \quad \beta = 1 - \alpha\,.}
 	\end{equation}
-	\item In order to decide when an unbiased estimator is of minimum variance,
-	we must compute its variance.
+	\item In order to decide when an unbiased estimator is of minimal variance,
+	we must compute its variance\footnote{Yes, really.}.
 	The variance of \(\hTheta_{\theta}\) is given by
 	\begin{align}
 	\var{\hTheta_{\theta}} &= \expe{(\hTheta_\theta - \theta)^2}\,,\notag
 	\intertext{where we simplified the expression from the definition thanks to the fact that \(\theta\) is real and scalar.
-	Developing, we find}
+	Developing and using \eqref{eq:unbiasedreq}, we find}
 	\var{\hTheta_{\theta}}&= \expe{\left(\alpha \hTheta_{\theta, 1} + (1 - \alpha) \hTheta_{\theta, 2}\right)^2} \notag\\
 	&= \expe{\alpha^2 \hTheta_{\theta, 1}^2  + 2 \alpha (1 - \alpha) \hTheta_{\theta, 1} \hTheta_{\theta, 2} + (1 - \alpha)^2 \hTheta_{\theta, 2}^2} \notag\\
 	&= \expe{\alpha^2 \hTheta_{\theta, 1}^2} + \expe{2 \alpha (1 - \alpha) \hTheta_{\theta, 1} \hTheta_{\theta, 2}} + \expe{(1 - \alpha)^2 \hTheta_{\theta, 2}^2}\,.\notag
@@ -158,7 +159,7 @@ Let us define \(\hTheta_\theta = \alpha \hTheta_{\theta, 1} + \beta \hTheta_{\th
 	Thus, we get}
 	\var{\hTheta_{\theta}}&= \alpha^2 \vars + (1 - \alpha)^2 \vars\,.\notag
 	\end{align}
-	We want to minise this quantity, hence we set its derivative equal to zero:
+	We want to minimize this quantity, hence we set its derivative equal to zero:
 	\begin{align}
 	\frac{\dif}{\dif \alpha} \left(\var{\hTheta_{\theta}}\right) &= \big(2 \alpha - 2 (1 - \alpha)\big) \vars \coloneqq 0 \notag\\
 	\iff 2 \alpha &= 2 (1 - \alpha)\notag\\
@@ -167,9 +168,31 @@ Let us define \(\hTheta_\theta = \alpha \hTheta_{\theta, 1} + \beta \hTheta_{\th
 	We also need to verify that these values do in fact constitute a minimum.
 	This requires computing the second derivative, which is equal to
 	\begin{equation}
-	\frac{\dif^2}{\dif \alpha^2} \left(\var{\hTheta_{\theta}}\right) = \frac{\dif}{\dif \alpha} \Big(\big(2 \alpha - 2 (1 - \alpha)\big) \vars \Big)  = 4 \vars \ge 0\,. \notag
+	\label{eq:2ndderiv}
+	\frac{\dif^2}{\dif \alpha^2} \left(\var{\hTheta_{\theta}}\right) = \frac{\dif}{\dif \alpha} \Big(\big(2 \alpha - 2 (1 - \alpha)\big) \vars \Big)  = 4 \vars \ge 0\,.
 	\end{equation}
-	As mentioned in the equation, this quantity is positive, hence the values of \(\alpha\) and \(\beta\) found above minimize the variance, as expected.
+	As mentioned in \eqref{eq:2ndderiv}, this quantity is positive, hence the values of \(\alpha\) and \(\beta\) found above minimize the variance, as expected.
+	This can also be observed on Figure~\ref{fig:plot}.
+	\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[
+        xlabel={$\alpha$},
+        ylabel={$\dfrac{\var{\hTheta_\theta}}{\vars}$},
+        ylabel style={rotate=-90},
+        ]
+	    \addplot [
+	        red,
+	        domain=-2:3,
+	        samples=201,
+	    ]
+	        {x^2 + (1 - x)^2};
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Plot of \(\left.\var{\hTheta_\theta} \right/ \vars\) as a function of \(\alpha\).
+	The variance is minimized when \(\alpha = 1/2\), as expected.}
+	\label{fig:plot}
+	\end{figure}
 \end{itemize}
 
 Taking both requirements into account, we find that
