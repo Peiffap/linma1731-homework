@@ -1,0 +1,180 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{1pt}
+\fancyhead[C]{\textsc{[LINMA1731] Sixth Homework}}
+\fancyhead[L]{23 April 2019}
+\fancyhead[R]{Gilles \textsc{Peiffer} (24321600)}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{mathtools,amssymb}
+\usepackage[binary-units=true,separate-uncertainty = true,multi-part-units=single]{siunitx}
+\usepackage{float}
+\usepackage[linktoc=all]{hyperref}
+\hypersetup{breaklinks=true}
+\newcommand{\hsp}{\hspace{20pt}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\graphicspath{{img/}}
+\usepackage{caption}
+\usepackage{textcomp}
+\usepackage{array}
+\usepackage{tabularx,booktabs}
+\usepackage{titlesec}
+\usepackage{wrapfig}
+\pagestyle{fancy}
+\usepackage{empheq}
+\usepackage{mathrsfs}
+\DeclarePairedDelimiterX{\norm}[1]{\lVert}{\rVert}{#1}
+\definecolor{wolframred}{HTML}{DC1100}
+\definecolor{wolframorange}{HTML}{FF7D00}
+
+\DeclareSymbolFont{sfletters}{OML}{cmbrm}{m}{it}
+
+\DeclareMathSymbol{\smu}{\mathord}{sfletters}{"16}
+\DeclareMathSymbol{\ssigma}{\mathord}{sfletters}{"1B}
+\DeclareMathSymbol{\sphi}{\mathord}{sfletters}{"1E}
+\newcommand{\imag}{\mathrm{i}\mkern1mu} % Imaginary unit
+\newcommand{\imagj}{\mathrm{j}\mkern1mu} % Imaginary unit but with 100% more engineering
+\newcommand{\abs}[1]{\left\lvert#1\right\lvert}
+\usepackage{listings}
+\lstset{
+	language=Python,
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	basicstyle=\rm\small\ttfamily,
+	keywordstyle=\bfseries\color{dkred},
+	frame=single,
+	commentstyle=\color{gray}=small,
+	stringstyle=\color{dkgreen},
+	%backgroundcolor=\color{gray!10},
+	%tabsize=8, % Thank you Papa Torvalds
+	%rulecolor=\color{black!30},
+	%title=\lstname,
+	breaklines=true,
+	framextopmargin=2pt,
+	framexbottommargin=2pt,
+	extendedchars=true,
+	inputencoding=utf8,
+}
+
+\DeclareMathOperator{\newdiff}{d} % use \dif instead
+\newcommand{\dif}{\newdiff\!}
+\newcommand{\e}{\mathrm{e}}
+
+\newcommand\givenbase[1][]{\nonscript\:#1\lvert\nonscript\:}
+\let\given\givenbase
+\newcommand\sgiven{\givenbase[\delimsize]}
+\DeclarePairedDelimiterX\Basics[1](){\let\given\sgiven #1}
+
+\makeatletter
+\DeclareRobustCommand{\Pr}{\operatorname{Pr}\@ifstar\@firstofone\@Pr}
+\newcommand{\@Pr}[1]{\left\{#1\right\}}
+\makeatother
+
+\newcommand{\cdf}{\mathsf{F}}
+\newcommand{\pdf}{\mathsf{f}}
+\newcommand{\momnc}{\mathsf{m}}
+\newcommand{\mom}{\smu}
+\newcommand{\sd}{\ssigma}
+\newcommand{\vars}{\ssigma^2}
+\newcommand{\charfun}{\sphi}
+\newcommand{\vecX}{\bm{X}}
+\newcommand{\vecXc}{\vecX_{\textnormal{c}}}
+\newcommand{\Hc}{H_\textnormal{c}}
+\newcommand{\vecY}{\bm{Y}}
+\newcommand{\vecYc}{\vecY_{\textnormal{c}}}
+\newcommand{\vecZ}{\bm{Z}}
+\newcommand{\vecZc}{\vecZ_{\textnormal{c}}}
+\newcommand{\vecmom}{\bm{\momnc}}
+\newcommand{\cov}{C}
+\newcommand{\covmat}{\bm{\cov}}
+\newcommand{\Amat}{\bm{A}}
+\newcommand{\hilb}{\textnormal{H}}
+\newcommand{\hTheta}{\widehat{\Theta}}
+\newcommand{\wopt}{w_{\textnormal{opt}}}
+
+\makeatletter
+\DeclareRobustCommand{\expe}{\mathbb{E}\@ifstar\@firstofone\@expe}
+\newcommand{\@expe}[1]{\left[#1\right]}
+\makeatother
+
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+
+\makeatletter
+\DeclareRobustCommand{\var}{\mathbb{V}\@ifstar\@firstofone\@var}
+\newcommand{\@var}[1]{\left[#1\right]}
+\makeatother
+
+\newcommand*\widebox[1]{\boxed{#1}}
+
+\begin{document}
+\section{Statement}
+Let \(X(n)\) be a real WSS process whose correlation function is given by \(R_X(k) = \e^{-k^2}\).
+This signal is amplified by a factor \(c \in \mathbb{R}\) and corrupted by an additive white noise \(N(n)\)
+of variance \(\vars_N\).
+We hence observe a signal \(Y(n)\) given by \(Y(n) = cX(n) + N(n)\).
+
+One would like to design a Wiener filter of order two (i.e. with two coefficients) in order to optimally compute an estimate of \(X(n)\) based on observations \(Y(n)\).
+\begin{itemize}
+	\item Based on the orthogonality principle, give the linear system of equations to solve in order to find the expression of the two coefficients.
+	\item Give the expressions of the two coefficients of the filter.
+	\item Give the expression of the transfer function \(W(z)\) of the Wiener filter.
+\end{itemize}
+
+\section{Solution}
+\begin{itemize}
+	\item The orthogonality principle says that \(\expe{\Big(X(n) - \hat{X}(n)\Big)\Big(cX(n) + N(n) \Big)} = 0\).
+	From this, one can deduce the Wiener--Hopf equations,
+	given in matrix form by
+	\begin{equation}
+	R_Y w = R_{XY}\,.\notag
+	\end{equation}
+	One can compute these matrices\footnote{Using properties of the covariance which also apply to the correlation due to its quadratic nature, as well as using the fact that \(X\) and \(N\) are uncorrelated.}:
+	\begin{align}
+	R_Y(k) &= c^2 R_X(k) + R_N(k) = c^2 \e^{-k^2} + \vars_N \delta(k)\,,\notag\\
+	R_{XY}(k) &= c^2 \e^{-k^2}\notag\,.
+	\end{align}
+	Knowing that the filter is of order two,
+	one then finds the following Wiener--Hopf equations:
+	\begin{align}
+	\begin{pmatrix} R_Y(0) & R_Y(-1) \\ R_Y(1) & R_Y(0) \end{pmatrix}
+	\begin{pmatrix} w(0) \\ w(1) \end{pmatrix}
+	&=
+	\begin{pmatrix} R_{XY}(0) \\ R_{XY}(1) \end{pmatrix}\notag\\
+	\implies
+	\Aboxed{{\begin{pmatrix} c^2 + \vars_N & c^2/\e \\ c^2/\e & c^2 + \vars_N \end{pmatrix}}
+	{\begin{pmatrix} w(0) \\ w(1) \end{pmatrix}}
+	&=
+	{\begin{pmatrix} c^2 \\ c^2/\e \end{pmatrix}}\,.}\label{eq:wh}
+	\end{align}
+	\item Rearranging the system in \eqref{eq:wh} to isolate the optimal filter, one finds
+	\begin{equation}
+	\begin{pmatrix} \wopt(0) \\ \wopt(1) \end{pmatrix}
+	=
+	\begin{pmatrix} c^2 + \vars_N & c^2/\e \\ c^2/\e & c^2 + \vars_N \end{pmatrix}^{-1}
+	\begin{pmatrix} c^2 \\ c^2/\e \end{pmatrix}\,.\notag
+	\end{equation}
+	Solving this equation yields
+	\begin{align}
+	\begin{pmatrix} \wopt(0) \\ \wopt(1) \end{pmatrix}
+	&= \frac{\e}{(\e^2 - 1)c^4 + 2 \e^2 c^2 \vars_N + \e^2 \sigma_N^4}
+	\begin{pmatrix} \e c^2 + \e \vars_N & -c^2 \\ -c^2 & \e c^2 + \e \vars_N \end{pmatrix} \begin{pmatrix} c^2 \\ c^2/\e \end{pmatrix}\,.\notag
+	\intertext{This finally evaluates to}
+	\Aboxed{{\begin{pmatrix} \wopt(0) \\ \wopt(1) \end{pmatrix}} &= \frac{\e c^2}{(\e^2 - 1)c^4 + 2 \e^2 c^2 \vars_N + \e^2 \sigma_N^4} {\begin{pmatrix} \e c^2 + \e \vars_N - c^2/\e \\ \vars_N \end{pmatrix}}\,.}\label{eq:wopt}
+	\end{align}
+	\item The transfer function \(W(z)\) of the filter can then be found to be
+	\begin{equation}
+	\boxed{W(z) = \frac{\e c^2}{(\e^2 - 1)c^4 + 2 \e^2 c^2 \vars_N + \e^2 \sigma_N^4} \Big(\e c^2 + \e \vars_N - c^2/\e + z^{-1} \vars_N \Big)\,,}
+	\end{equation}
+	from \eqref{eq:wopt}.
+\end{itemize}
+\end{document}
