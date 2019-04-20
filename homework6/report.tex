@@ -138,10 +138,10 @@ One would like to design a Wiener filter of order two (i.e. with two coefficient
 	\begin{equation}
 	R_Y w = R_{XY}\,.\notag
 	\end{equation}
-	One can compute these matrices\footnote{Using properties of the covariance which also apply to the correlation due to its quadratic nature, as well as using the fact that \(X\) and \(N\) are uncorrelated.}:
+	One can compute these matrices\footnote{Using the fact that \(X\) and \(N\) are uncorrelated.}:
 	\begin{align}
 	R_Y(k) &= c^2 R_X(k) + R_N(k) = c^2 \e^{-k^2} + \vars_N \delta(k)\,,\notag\\
-	R_{XY}(k) &= c^2 \e^{-k^2}\notag\,.
+	R_{XY}(k) &= c \e^{-k^2}\notag\,.
 	\end{align}
 	Knowing that the filter is of order two,
 	one then finds the following Wiener--Hopf equations:
@@ -154,26 +154,26 @@ One would like to design a Wiener filter of order two (i.e. with two coefficient
 	\Aboxed{{\begin{pmatrix} c^2 + \vars_N & c^2/\e \\ c^2/\e & c^2 + \vars_N \end{pmatrix}}
 	{\begin{pmatrix} w(0) \\ w(1) \end{pmatrix}}
 	&=
-	{\begin{pmatrix} c^2 \\ c^2/\e \end{pmatrix}}\,.}\label{eq:wh}
+	{\begin{pmatrix} c \\ c/\e \end{pmatrix}}\,.}\label{eq:wh}
 	\end{align}
 	\item Rearranging the system in \eqref{eq:wh} to isolate the optimal filter, one finds
 	\begin{equation}
 	\begin{pmatrix} \wopt(0) \\ \wopt(1) \end{pmatrix}
 	=
 	\begin{pmatrix} c^2 + \vars_N & c^2/\e \\ c^2/\e & c^2 + \vars_N \end{pmatrix}^{-1}
-	\begin{pmatrix} c^2 \\ c^2/\e \end{pmatrix}\,.\notag
+	\begin{pmatrix} c \\ c/\e \end{pmatrix}\,.\notag
 	\end{equation}
 	Solving this equation yields
 	\begin{align}
 	\begin{pmatrix} \wopt(0) \\ \wopt(1) \end{pmatrix}
 	&= \frac{\e}{(\e^2 - 1)c^4 + 2 \e^2 c^2 \vars_N + \e^2 \sigma_N^4}
-	\begin{pmatrix} \e c^2 + \e \vars_N & -c^2 \\ -c^2 & \e c^2 + \e \vars_N \end{pmatrix} \begin{pmatrix} c^2 \\ c^2/\e \end{pmatrix}\,.\notag
+	\begin{pmatrix} \e c^2 + \e \vars_N & -c^2 \\ -c^2 & \e c^2 + \e \vars_N \end{pmatrix} \begin{pmatrix} c \\ c/\e \end{pmatrix}\,.\notag
 	\intertext{This finally evaluates to}
-	\Aboxed{{\begin{pmatrix} \wopt(0) \\ \wopt(1) \end{pmatrix}} &= \frac{\e c^2}{(\e^2 - 1)c^4 + 2 \e^2 c^2 \vars_N + \e^2 \sigma_N^4} {\begin{pmatrix} \e c^2 + \e \vars_N - c^2/\e \\ \vars_N \end{pmatrix}}\,.}\label{eq:wopt}
+	\Aboxed{{\begin{pmatrix} \wopt(0) \\ \wopt(1) \end{pmatrix}} &= \frac{\e c}{(\e^2 - 1)c^4 + 2 \e^2 c^2 \vars_N + \e^2 \sigma_N^4} {\begin{pmatrix} \e c^2 + \e \vars_N - c^2/\e \\ \vars_N \end{pmatrix}}\,.}\label{eq:wopt}
 	\end{align}
 	\item The transfer function \(W(z)\) of the filter can then be found to be
 	\begin{equation}
-	\boxed{W(z) = \frac{\e c^2}{(\e^2 - 1)c^4 + 2 \e^2 c^2 \vars_N + \e^2 \sigma_N^4} \Big(\e c^2 + \e \vars_N - c^2/\e + z^{-1} \vars_N \Big)\,,}
+	\boxed{W(z) = \frac{\e c}{(\e^2 - 1)c^4 + 2 \e^2 c^2 \vars_N + \e^2 \sigma_N^4} \Big(\e c^2 + \e \vars_N - c^2/\e + z^{-1} \vars_N \Big)\,,}
 	\end{equation}
 	from \eqref{eq:wopt}.
 \end{itemize}
